@@ -1,0 +1,10 @@
+com\app\Controller.class
+com\app\Track.class
+com\app\LyricsLine.class
+com\app\Main.class
+com\app\PlaybackManager.class
+com\app\Playlist.class
+com\app\Version.class
+module-info.class
+com\app\LyricsParser.class
+com\app\App.class

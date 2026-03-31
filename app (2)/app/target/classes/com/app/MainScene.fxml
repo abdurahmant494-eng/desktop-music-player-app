@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Hyperlink?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="com.app.Controller"
+            stylesheets="@style.css">
+    <top>
+        <HBox spacing="10" style="-fx-padding: 10;" alignment="CENTER">
+            <!-- Previous Track -->
+            <Button fx:id="prevButton" text="⏮" onAction="#handlePrevious"
+                    style="-fx-font-size: 18px; -fx-min-width: 50px; -fx-min-height: 50px;"/>
+            
+            <!-- Play Button -->
+            <Button fx:id="playButton" text="▶" onAction="#handlePlay"
+                    style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-min-width: 60px; -fx-min-height: 60px;"/>
+            
+            <!-- Pause Button -->
+            <Button fx:id="pauseButton" text="⏸" onAction="#handlePause"
+                    style="-fx-font-size: 18px; -fx-min-width: 50px; -fx-min-height: 50px;"/>
+            
+            <!-- Stop -->
+            <Button fx:id="stopButton" text="⏹" onAction="#handleStop"
+                    style="-fx-font-size: 18px; -fx-min-width: 50px; -fx-min-height: 50px;"/>
+            
+            <!-- Next Track -->
+            <Button fx:id="nextButton" text="⏭" onAction="#handleNext"
+                    style="-fx-font-size: 18px; -fx-min-width: 50px; -fx-min-height: 50px;"/>
+            
+            <!-- Open Audio Files -->
+            <Button text="📂" onAction="#handleOpen" 
+                    style="-fx-font-size: 18px; -fx-min-width: 50px; -fx-min-height: 50px;">
+                <tooltip>
+                    <Tooltip text="Open audio files"/>
+                </tooltip>
+            </Button>
+            
+            <!-- Load Lyrics File -->
+            <Button text="📄" onAction="#handleLoadLyrics" 
+                    style="-fx-font-size: 18px; -fx-min-width: 50px; -fx-min-height: 50px;">
+                <tooltip>
+                    <Tooltip text="Load lyrics file (.lrc or .txt)"/>
+                </tooltip>
+            </Button>
+            
+            <!-- About Button -->
+            <Button text="ℹ️" onAction="#showAboutDialog"
+                    style="-fx-font-size: 16px; -fx-min-width: 40px; -fx-min-height: 40px;">
+                <tooltip>
+                    <Tooltip text="About this application"/>
+                </tooltip>
+            </Button>
+            
+            <!-- Current Track Display -->
+            <Label fx:id="currentTrackLabel" text="Now Playing: " 
+                   style="-fx-font-size: 14px; -fx-padding: 0 20;"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 20;">
+            <!-- Album Art Display -->
+            <ImageView fx:id="albumArtView" 
+                       fitHeight="250" 
+                       fitWidth="250"
+                       preserveRatio="true"
+                       style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 15, 0, 0, 5);"/>
+            
+            <!-- Lyrics Display Section -->
+            <VBox spacing="10" alignment="CENTER" 
+                  style="-fx-background-color: rgba(0,0,0,0.3); -fx-background-radius: 10; -fx-padding: 15;">
+                <Label text="🎵 Lyrics" style="-fx-text-fill: #2ecc71; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                
+                <!-- Current Lyric (highlighted) -->
+                <Label fx:id="currentLyricLabel" 
+                       text="No lyrics loaded"
+                       wrapText="true"
+                       style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold; -fx-text-alignment: center;"/>
+                
+                <!-- Upcoming Lyrics -->
+                <VBox fx:id="upcomingLyricsBox" spacing="5" alignment="CENTER">
+                    <Label text="Upcoming:" style="-fx-text-fill: #95a5a6; -fx-font-size: 12px;"/>
+                    <!-- Lyrics will be added dynamically -->
+                </VBox>
+                
+                <!-- Lyrics Status -->
+                <Label fx:id="lyricsStatusLabel" 
+                       text="Load .lrc or .txt file with same name as audio"
+                       style="-fx-text-fill: #bdc3c7; -fx-font-size: 11px; -fx-font-style: italic;"/>
+            </VBox>
+            
+            <!-- Playlist -->
+            <ListView fx:id="playlistView" prefHeight="150" prefWidth="400"/>
+        </VBox>
+    </center>
+    <bottom>
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <!-- Progress Bar Section -->
+            <HBox spacing="10" alignment="CENTER">
+                <Label fx:id="currentTimeLabel" text="00:00" minWidth="40"/>
+                <Slider fx:id="progressSlider" min="0" max="100" value="0" 
+                        onMousePressed="#handleProgressMousePressed"
+                        onMouseReleased="#handleProgressMouseReleased"
+                        onDragDetected="#handleProgressDrag"
+                        style="-fx-pref-width: 300px;"/>
+                <Label fx:id="totalTimeLabel" text="00:00" minWidth="40"/>
+            </HBox>
+            
+            <!-- Volume Control Section -->
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="🔊" style="-fx-font-size: 16px;"/>
+                <Slider fx:id="volumeSlider" min="0" max="100" value="50" 
+                        onMouseReleased="#handleVolumeChange"
+                        style="-fx-pref-width: 150px;"/>
+            </HBox>
+            
+            <!-- Developer Footer -->
+            <HBox alignment="CENTER_RIGHT" style="-fx-padding: 5px 15px;">
+                <Label text="Developed by " style="-fx-text-fill: rgba(255,255,255,0.5); -fx-font-size: 11px;"/>
+                <Hyperlink text="Tahir Abduro" 
+                          style="-fx-text-fill: #4facfe; -fx-font-size: 11px; -fx-border-color: transparent;"
+                          onAction="#openPortfolio"/>
+                <Label text=" • " style="-fx-text-fill: rgba(255,255,255,0.5); -fx-font-size: 11px;"/>
+                <Hyperlink text="Portfolio" 
+                          style="-fx-text-fill: #4facfe; -fx-font-size: 11px; -fx-border-color: transparent;"
+                          onAction="#openPortfolio"/>
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>
